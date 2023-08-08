@@ -122,7 +122,7 @@ do
         if table_indexed_count(cache) > 0 then
             return cache, table_indexed_count(cache)
         else
-            return nil, 0
+            return false, 0
         end
     end
 
