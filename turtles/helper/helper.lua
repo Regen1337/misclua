@@ -65,7 +65,7 @@ local table_insert = table.insert
 local table_contains = table.contains
 local table_indexed_contains = table.indexed_contains
 local table_count = table.count
-local table_indexed_count = table.
+local table_indexed_count = table.indexed_count
 
 do
     turtle.rotation_states = {
