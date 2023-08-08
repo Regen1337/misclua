@@ -63,6 +63,11 @@ local function exec_callback(callback, ...)
     end
 end
 
+-- function to check if a number is divisible by 2
+local function isEven(num)
+    return num % 2 == 0
+end
+
 do
     turtle.rotation_states = {
         PRE_ROTATION = 1,
@@ -115,7 +120,7 @@ do
         end
         
         if table_indexed_count(cache) > 0 then
-            return cache
+            return cache, table_indexed_count(cache)
         else
             return nil
         end
@@ -253,11 +258,12 @@ local function handleObstacles()
 end
 
 -- Function to mine a tunnel
-local function mineTunnel(length, height)
-    local new_length = length
+local function mineTunnel(length, height, current_height)
+    current_height = current_height or 0
     local torchInterval = config.torchPlacementInterval
-    local turtle_height = 0
+    local new_length = length
     local turtle_step = 0
+    local tunnel_done = false
 
     for i = 1, new_length do
         handleObstacles()
@@ -275,31 +281,59 @@ local function mineTunnel(length, height)
             placeTorches()
         end
 
-        if height > 1 then
-            for x = 1, height - 1 do
+        if turtle.findUnloadBlacklistedSlots() >= config.itemThreshold then
+            turtle.unloadItems()
+        end
+            
+        if turtle_step == length and height > 1 and height > current_height then
+            turtle.rotate180(DUR_ROTATION, function() 
                 if not turtle.up() then
                     turtle.digUp()
-                    if turtle.up() then
-                        turtle_height = turtle_height + 1
-                    end 
+                    turtle.up()
+                end
+            end)
+        end
+
+        --[[
+            if height > 1 then
+                for x = 1, height - 1 do
+                    if not turtle.up() then
+                        turtle.digUp()
+                        if turtle.up() then
+                            current_height = current_height + 1
+                        end 
+                    end
+                end
+
+                while current_height > 0 do
+                    if not turtle.down() then
+                        turtle.digDown()
+                        turtle.down()
+                    end
+                    current_height = current_height - 1
                 end
             end
-
-            while turtle_height > 0 do
-                if not turtle.down() then
-                    turtle.digDown()
-                    turtle.down()
-                end
-                turtle_height = turtle_height - 1
-            end
-
-            if turtle_step == length then
-                turtle.forward()
-            end 
-        end    
+        ]]
     end
 
-    print(string.format("Tunnel mined. Length: %d", length - new_length))
+    -- recursive call to mine the next tunnel of it's self
+    if height > 1 and current_height < height then
+        current_height = current_height + 1
+        mineTunnel(length, height, current_height)
+    elseif height >1 and current_height == height then
+        if isEven(height) then 
+            turtle.rotate180(DUR_ROTATION, function() 
+                while current_height > 0 do
+                    if not turtle.down() then
+                        turtle.digDown()
+                        turtle.down()
+                    end
+                    current_height = current_height - 1
+                end
+            end)
+        end
+    end
+
     if new_length > 0 then
         mineTunnel(new_length, height)
     end
