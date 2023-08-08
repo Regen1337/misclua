@@ -258,20 +258,15 @@ local function mineTunnel(length, height)
     local torchInterval = config.torchPlacementInterval
     local turtle_start_pos = turtle.cachePos()
     local start_height_y = turtle_start_pos.y
-    local turtle_top_pos
+    local turtle_step = 0
 
     for i = 1, new_length do
         handleObstacles()
+        turtle_step = turtle_step + 1
 
         if not turtle.forward() then
-            if i == length then
-                turtle.forward()
-                turtle.dig()
-                turtle.forward()
-            else
-                turtle.dig()
-                turtle.forward()
-            end 
+            turtle.dig()
+            turtle.forward()
         end
 
         new_length = math.max(0, new_length - 1)
@@ -282,7 +277,6 @@ local function mineTunnel(length, height)
         end
 
         if height > 1 then
-            
             for x = 1, height - 1 do
                 if not turtle.up() then
                     turtle.digUp()
@@ -293,6 +287,10 @@ local function mineTunnel(length, height)
             while turtle.cachePos().y > start_height_y do
                 turtle.down()
             end
+
+            if turtle_step == length then
+                turtle.forward()
+            end 
         end    
     end
 
@@ -308,10 +306,11 @@ local function mineBranchTunnel(data)
     local direction = (direction == "left") and -1 or 1
 
     for i = 1, count do
-        -- Dig the main tunnel
         mineTunnel(length, height)
 
-        -- Return to the main tunnel and move forward by divider length
+        --[[
+        Return to the main tunnel and move forward by divider length
+        
         turtle.turnLeft()
         for _ = 1, divider_length do
             if not turtle.forward() then
@@ -321,7 +320,8 @@ local function mineBranchTunnel(data)
         end
         turtle.turnRight()
 
-        --[[ Move to the new branch tunnel position
+        Move to the new branch tunnel position
+        
         for _ = 1, (i == count and 0 or 1) do
             turtle.forward()
         end
