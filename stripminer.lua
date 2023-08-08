@@ -158,17 +158,17 @@ do
                 end
             end
         end
+    end
+    
+    function turtle.cachePos()
+        local x, y, z = gps.locate()
+        turtle.position = {x = x, y = y, z = z}
 
-        function turtle.cachePos()
-            local x, y, z = gps.locate()
-            turtle.position = {x = x, y = y, z = z}
+        return turtle.position
+    end
 
-            return turtle.position
-        end
-
-        function turtle.getPos()
-            return turtle.position
-        end
+    function turtle.getPos()
+        return turtle.position
     end
 
     local PRE_ROTATION = turtle.rotation_states.PRE_ROTATION
