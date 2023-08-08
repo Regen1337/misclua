@@ -20,9 +20,9 @@ do
             if value == element then
                 return true
             end
-    end
         end
         return false
+    end
 
     function table.indexed_contains(table, element)
         for _, value in ipairs(table) do

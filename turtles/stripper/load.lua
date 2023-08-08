@@ -1,4 +1,3 @@
-
 local helper = http.get("https://raw.githubusercontent.com/Regen1337/misclua/main/turtles/helper/helper.lua").readAll()
 local miner = http.get("https://raw.githubusercontent.com/Regen1337/misclua/main/turtles/stripper/stripminer.lua").readAll()
 
@@ -13,4 +12,5 @@ stripminer_file.close()
 shell.run("turtle_helper.lua")
 shell.run("stripminer.lua")
 
+print("Loaded turtle_helper.lua")
 print("Loaded stripminer.lua\n")

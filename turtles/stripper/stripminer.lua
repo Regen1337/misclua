@@ -64,7 +64,7 @@ local function mineTunnel(length, height, current_height)
         if turtle_step == length and height > 1 and height > current_height then
             turtle.rotate180(POST_ROTATION, function()
                 print("Going up!")
-                while not turtle.up() then
+                while not turtle.up() do
                     turtle.digUp()
                     turtle.up()
                 end
