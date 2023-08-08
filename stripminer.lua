@@ -281,7 +281,8 @@ local function mineTunnel(length, height, current_height)
             placeTorches()
         end
 
-        if turtle.findUnloadBlacklistedSlots() >= config.itemThreshold then
+        local slots, slots_count = turtle.findUnloadBlacklistedSlots()
+        if slots_count >= config.itemThreshold then
             turtle.unloadItems()
         end
             
