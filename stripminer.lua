@@ -256,8 +256,7 @@ end
 local function mineTunnel(length, height)
     local new_length = length
     local torchInterval = config.torchPlacementInterval
-    local turtle_start_pos = turtle.cachePos()
-    local start_height_y = turtle_start_pos.y
+    local turtle_height = 0
     local turtle_step = 0
 
     for i = 1, new_length do
@@ -280,12 +279,18 @@ local function mineTunnel(length, height)
             for x = 1, height - 1 do
                 if not turtle.up() then
                     turtle.digUp()
-                    turtle.up() 
+                    if turtle.up() then
+                        turtle_height = turtle_height + 1
+                    end 
                 end
             end
 
-            while turtle.cachePos().y > start_height_y do
-                turtle.down()
+            while turtle_height > 0 do
+                if not turtle.down() then
+                    turtle.digDown()
+                    turtle.down()
+                end
+                turtle_height = turtle_height - 1
             end
 
             if turtle_step == length then
