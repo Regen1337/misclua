@@ -54,6 +54,7 @@ local function mineTunnel(length, height, current_height)
         local slots, slots_count = turtle.findUnloadBlacklistedSlots()
         slots_count = turtle.getItemsCount() - slots_count
 
+        print(string.format("Slots: %d of %d", slots_count, config.itemThreshold))
         if slots_count >= config.itemThreshold and current_height == 1 then
             print("Unloading items...")
             turtle.unloadItems()
@@ -73,9 +74,10 @@ local function mineTunnel(length, height, current_height)
                 while current_height > 1 do
                     if not turtle.down() then
                         turtle.digDown()
-                        turtle.down()
+                        if turtle.down() then
+                            current_height = current_height - 1
+                        end
                     end
-                    current_height = current_height - 1
                     os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
@@ -85,9 +87,10 @@ local function mineTunnel(length, height, current_height)
                 while current_height > 1 do
                     if not turtle.down() then
                         turtle.digDown()
-                        turtle.down()
+                        if turtle.down() then
+                            current_height = current_height - 1
+                        end
                     end
-                    current_height = current_height - 1
                     os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
@@ -121,6 +124,7 @@ local function mineBranchTunnel(data)
 
     turtle.doRefuel()
     mineTunnel(length + (divider_length * count), height)
+    os.sleep(1)
     turtle.rotate90(direction)
 
     for _ = 1, count do
