@@ -117,6 +117,7 @@ end
 local function mineBranchTunnel(data)
     local count, divider_length, height, direction, length = unpack(data)
     direction = (direction == "left") and -1 or 1
+    divider_length = divider_length + 1
 
     turtle.doRefuel()
     mineTunnel(length + (divider_length * count), height)
