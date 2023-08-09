@@ -66,8 +66,8 @@ local function mineTunnel(length, height, current_height)
     if height > 1 and current_height < height + 1 then
 
         turtle.rotate180(POST_ROTATION, function()
-            turtle.recurseUp()
         end)
+        turtle.recurseUp()
 
         mineTunnel(length, height, current_height)
         return
