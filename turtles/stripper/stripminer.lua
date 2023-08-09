@@ -52,12 +52,14 @@ local function mineTunnel(length, height, current_height)
         new_length = math.max(0, new_length - 1)
 
         local slots, slots_count = turtle.findUnloadBlacklistedSlots()
+        slots_count = turtle.getItemsCount() - slots_count
+
         if slots_count >= config.itemThreshold and current_height == 1 then
+            print("Unloading items...")
             turtle.unloadItems()
         end
     end
 
-    print(string.format("Height: %d, Current Height: %d", height, current_height))
     if height > 1 and current_height < height then
 
         turtle.rotate180()
@@ -162,16 +164,15 @@ end
 print("Please provide the length of the tunnel(s):")
 local tunnelLength = tonumber(read())
 
---[[
+
 print("Please provide the direction of the tunnel(s) (left or right):")
 local tunnelDirection =  string.lower(tostring(read()))
 if not tunnelDirection or (string.lower(tunnelDirection) ~= "left" and string.lower(tunnelDirection) ~= "right") then
-    print("Invalid input. Exiting.")
+    print(string.format("Invalid direction provided: %s", tunnelDirection))
     return
 end
 tunnelDirection = string.lower(tunnelDirection)
-]]
-tunnelDirection = "left"
+
 
 if not tunnelLength or tunnelLength <= 0 then
     tunnelLength = 1
