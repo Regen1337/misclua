@@ -204,7 +204,7 @@ do
         if callback and not type(callback) == "function" then return end
         if method <= 0 or method > table_indexed_count(turtle.rotation_states) then return end
 
-        print(method)
+        print("pre callback")
         if method == PRE_ROTATION then
             exec_callback(callback, ...)
         end
