@@ -143,7 +143,13 @@ local function mineBranchTunnel(data)
         turtle.rotate90(direction)
 
         mineTunnel(length, height)
+        turtle.rotate180()
+        turtle.recurseForward(1)
+
+        turtle.rotate90(direction)
         turtle.recurseForward(divider_length)
+        turtle.rotate90(direction)
+
     end
     
 end
