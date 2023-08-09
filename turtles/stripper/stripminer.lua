@@ -44,7 +44,7 @@ local function mineTunnel(length, height, current_height)
         handleObstacles()
         turtle_step = turtle_step + 1
 
-        local slots, slots_count = turtle.findUnloadBlacklistedSlots()
+        local slots, slots_count = turtle.findStripMinerUnloadSlots()
         slots_count = turtle.getItemsCount() - slots_count
 
         print(string.format("Slots: %d of %d", slots_count, config.itemThreshold))

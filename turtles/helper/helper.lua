@@ -138,12 +138,11 @@ do
         return nil
     end
 
-    -- Find unloading blacklisted slots
-    function turtle.findUnloadBlacklistedSlots()
+    function turtle.findStripMinerUnloadSlots(bWhitelist)
         local cache = {}
         for slot = 1, 16 do
             local item = turtle.getItemDetail(slot)
-            if item and table_indexed_contains(unload.blacklist, item.name) then
+            if item and (bWhitelist and not table_indexed_contains(unload.blacklist, item.name) or not bWhitelist and table_indexed_contains(unload.blacklist, item.name)) then
                 table_insert(cache, slot)
             end
         end
@@ -185,10 +184,10 @@ do
                 os.pullEvent("turtle_inventory")
             end
 
-            local slots, count = turtle.findUnloadBlacklistedSlots()
+            local slots, count = turtle.findStripMinerUnloadSlots(true)
             if slots then
-                for _, slot in ipairs(slots) do
-                    turtle.select(slot)
+                for i = 1, count do
+                    turtle.select(slots[i])
                     turtle.dropDown()
                 end
             end
