@@ -181,7 +181,7 @@ do
 
     -- Function to rotate the turtle 360 degrees and execute a callback
     function turtle.rotate360(method, callback, ...)
-        if callback and not type(callback) == "function" then return end
+        if callback and type(callback) ~= "function" then return end
         if method <= 0 or method > table_indexed_count(turtle.rotation_states) then return end
 
         if method == PRE_ROTATION then
@@ -201,7 +201,7 @@ do
 
     -- Function to rotate the turtle 180 degrees and execute a callback
     function turtle.rotate180(method, callback, ...)
-        if callback and not type(callback) == "function" then return end
+        if callback and type(callback) ~= "function" then return end
         if method <= 0 or method > table_indexed_count(turtle.rotation_states) then return end
 
         print("pre callback")
