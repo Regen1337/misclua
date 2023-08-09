@@ -65,8 +65,7 @@ local function mineTunnel(length, height, current_height)
     print(string.format("Height: %d, Current Height: %d", height, current_height))
     if height > 1 and current_height < height then
 
-        turtle.rotate180(POST_ROTATION, function()
-        end)
+        turtle.rotate180()
         turtle.recurseUp()
 
         mineTunnel(length, height, current_height)
@@ -80,11 +79,12 @@ local function mineTunnel(length, height, current_height)
                         turtle.down()
                     end
                     current_height = current_height - 1
-                    os.sleep(0.3)
+                    os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
             end)
         else
+            --[[
             turtle.rotate360(DUR_ROTATION, function() 
                 while current_height > 1 do
                     if not turtle.down() then
@@ -92,12 +92,38 @@ local function mineTunnel(length, height, current_height)
                         turtle.down()
                     end
                     current_height = current_height - 1
-                    os.sleep(0.3)
+                    os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
             end)
+            ]]
+
+            turtle.rotate180(POST_ROTATION, function() 
+                while current_height > 1 do
+                    if not turtle.down() then
+                        turtle.digDown()
+                        turtle.down()
+                    end
+                    current_height = current_height - 1
+                    os.sleep(0.1)
+                    print(string.format("Height: %d, Current Height: %d", height, current_height))
+                end
+
+                -- move to end of tunnel
+                for i = 1, length do
+                    turtle.recurseForward()
+
+                    if i % torchInterval == 0 then
+                        print(string.format("Placing torch. Distance from start: %d", i))
+                        placeTorches()
+                    end
+                end
+
+                turtle.rotate180()
+            end)
         end
     end
+
 
     if new_length > 0 then
         mineTunnel(new_length, height, current_height)

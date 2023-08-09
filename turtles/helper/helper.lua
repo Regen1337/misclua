@@ -96,6 +96,17 @@ do
         end
     end
 
+    -- recursive forward function
+    function turtle.recurseForward()
+        if turtle.forward() then
+            os.sleep(0.1)
+        else
+            turtle.dig()
+            os.sleep(0.1)
+            turtle.recurseForward()
+        end
+    end
+
     -- Function to get the turtle's inventory
     function turtle.getItems()
         local items = {}
