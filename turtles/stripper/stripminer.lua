@@ -12,24 +12,25 @@ end
 
 -- Function to handle obstacles
 local function handleObstacles()
-    local success = false
-    while not success do
-        local blockDetected, blockData = turtle.inspect()
-        if blockDetected then
-            local blockName = blockData.name
-            if blockName == "minecraft:lava" or blockName == "minecraft:flowing_lava" or
-               blockName == "minecraft:water" or blockName == "minecraft:flowing_water" then
-                turtle.dig()
-            elseif blockName == "minecraft:sand" or blockName == "minecraft:gravel" then
-                turtle.dig()
-                turtle.place()
-            else
-                success = true
-            end
-        else
-            success = true
-        end
+    local up_inspect, up_info = turtle.inspectUp()
+    local down_inspect, down_info = turtle.inspectDown()
+    local front_inspect, front_info = turtle.inspect()
+    up_inspect = (up_inspect and up_info) and up_info.name or false
+    down_inspect = (down_inspect and down_info) and down_info.name or false
+    front_inspect = (front_inspect and front_info) and front_info.name or false
+
+    if up_inspect and table.contains(config.obstacles.diggable, up_inspect) then
+        turtle.recurseDigObstacle(1)
     end
+
+    if down_inspect and table.contains(config.obstacles.diggable, down_inspect) then
+        turtle.recurseDigObstacle(2)
+    end
+
+    if front_inspect and table.contains(config.obstacles.diggable, front_inspect) then
+        turtle.recurseDigObstacle(3)
+    end
+
 end
 
 -- Function to mine a tunnel

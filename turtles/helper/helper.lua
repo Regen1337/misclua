@@ -5,11 +5,18 @@ local sandName, gravelName = "minecraft:sand", "minecraft:gravel"
 local lavaName, waterName = "minecraft:lava", "minecraft:water"
 local lavaFlowName, waterFlowName = "minecraft:flowing_lava", "minecraft:flowing_water"
 
-
 local config = {
     torchPlacementInterval = 5,
     fuelThreshold = 500,
-    itemThreshold = 12
+    itemThreshold = 12,
+    obstacles = {
+        diggable = {
+            sandName, gravelName
+        },
+        undiggable = {
+            lavaName, waterName, lavaFlowName, waterFlowName
+        }
+    }
 }
 
 local unload = {
@@ -60,7 +67,6 @@ local function exec_callback(callback, ...)
     end
 end
 
--- function to check if a number is divisible by 2
 local function isEven(num)
     return num % 2 == 0
 end
@@ -78,7 +84,6 @@ do
         POST_ROTATION = 3
     }
 
-    -- turtle recurse up until it can go up, os.sleep(0.1)
     function turtle.recurseUp()
         if turtle.digUp() then
             if not turtle.up() then
@@ -100,7 +105,6 @@ do
         end
     end
 
-    -- recursive forward function
     function turtle.recurseForward()
         if not turtle.forward() then
             turtle.dig()
@@ -108,21 +112,18 @@ do
         end
     end
 
-    -- recursive dig function with a delay to check for gravel, and input direction to dig and check
-    function turtle.recurseDig(direction)
+    function turtle.recurseDigObstacle(direction)
         local dig = direction == 1 and turtle.digUp or direction == 2 and turtle.digDown or turtle.dig
-        local detect = direction == 1 and turtle.detectUp or direction == 2 and turtle.detectDown or turtle.detect
+        local inspect, info = direction == 1 and turtle.inspectUp or direction == 2 and turtle.inspectDown or turtle.inspect
 
-        if detect() then
-            if dig() then
-                os.sleep(1)
-                turtle.recurseDig(direction)
-            end
+        if inspect and info and table_contains(config.obstacles.diggable, info.name) then
+            os.sleep(0.5)
+            dig()
+            turtle.recurseDigObstacle(direction)
         end
 
     end
 
-    -- Function to get the turtle's inventory
     function turtle.getItems()
         local items = {}
         for slot = 1, 16 do
@@ -134,7 +135,6 @@ do
         return items
     end
 
-    -- Function to get the number of empty slots in the turtle's inventory
     function turtle.getItemsCount()
         local space = 0
         for slot = 1, 16 do
@@ -145,7 +145,6 @@ do
         return space
     end
 
-    -- Find slot number of an item by a array of names
     function turtle.findSlot(itemNames)
         for slot = 1, 16 do
             local item = turtle.getItemDetail(slot)
@@ -172,7 +171,6 @@ do
         end
     end
 
-    -- Function to refuel the turtle
     function turtle.doRefuel()
         while turtle.getFuelLevel() < config.fuelThreshold do
             local refueled = false
@@ -190,7 +188,6 @@ do
         end
     end
 
-    -- Function to unload valuable items
     function turtle.unloadItems()
         local chestSlot = turtle.findSlot {chestName}
         if chestSlot then
@@ -228,7 +225,6 @@ do
     local DUR_ROTATION = turtle.rotation_states.DUR_ROTATION
     local POST_ROTATION = turtle.rotation_states.POST_ROTATION
 
-    -- Function to rotate the turtle 360 degrees and execute a callback
     function turtle.rotate360(method, callback, ...)
         if method == PRE_ROTATION then
             exec_callback(callback, ...)
@@ -245,7 +241,6 @@ do
         end
     end
 
-    -- Function to rotate the turtle 180 degrees and execute a callback
     function turtle.rotate180(method, callback, ...)        
         if method == PRE_ROTATION then
             exec_callback(callback, ...)
@@ -260,7 +255,7 @@ do
         end        
     end
 
-    -- rotate 90 based on -1 or 1 input and execute a callback
+    -- rotates 90 degrees based on -1 (left) or 1 (right) input and executes a callback
     function turtle.rotate90(direction, method, callback, ...)
         if method == PRE_ROTATION then
             exec_callback(callback, ...)
