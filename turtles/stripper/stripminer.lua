@@ -48,8 +48,7 @@ local function mineTunnel(length, height, current_height)
         local slots, slots_count = turtle.findStripMinerUnloadSlots()
         slots_count = turtle.getItemsCount() - slots_count
 
-        print(string.format("Slots: %d of %d", slots_count, config.itemThreshold))
-        if slots_count >= config.itemThreshold and current_height <= 1 then
+        if slots_count <= 1 and current_height <= 1 then
             print("Unloading items...")
             turtle.unloadItems()
         end
