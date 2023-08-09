@@ -62,7 +62,7 @@ local function mineTunnel(length, height, current_height)
         end
     end
 
-    -- recursive call to mine the next tunnel of it's self
+    print(string.format("Height: %d, Current Height: %d", height, current_height))
     if height > 1 and current_height < height then
 
         turtle.rotate180(DUR_ROTATION, function()
