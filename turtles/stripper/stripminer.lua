@@ -54,7 +54,7 @@ local function mineTunnel(length, height, current_height)
         local slots, slots_count = turtle.findUnloadBlacklistedSlots()
         slots_count = turtle.getItemsCount() - slots_count
 
-        print(string.format("Slots: %d, Slots Count: %d", slots, slots_count))
+        print(string.format("Slots: %s, Slots Count: %d", slots, slots_count))
         if slots_count >= config.itemThreshold and current_height == 1 then
             print("Unloading items...")
             turtle.unloadItems()
