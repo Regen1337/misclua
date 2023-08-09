@@ -205,7 +205,9 @@ do
         print(string.format("callback: %s, type: %s", callback, type(callback)))
         print(string.format("method: %d", method))
         if callback and type(callback) ~= "function" then return end
+        print("callback is function")
         if method <= 0 or method > table_indexed_count(turtle.rotation_states) then return end
+        print("method is valid")
 
         print("pre callback")
         if method == PRE_ROTATION then
