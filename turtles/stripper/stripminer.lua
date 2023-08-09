@@ -34,7 +34,7 @@ end
 
 -- Function to mine a tunnel
 local function mineTunnel(length, height, current_height)
-    current_height = current_height + 1 or 0
+    current_height = current_height or 0; current_height = current_height + 1;
     local torchInterval = config.torchPlacementInterval
     local new_length = length
     local turtle_step = 0
