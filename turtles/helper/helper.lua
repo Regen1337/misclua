@@ -8,7 +8,6 @@ local lavaFlowName, waterFlowName = "minecraft:flowing_lava", "minecraft:flowing
 local config = {
     torchPlacementInterval = 5,
     fuelThreshold = 500,
-    itemThreshold = 12,
     obstacles = {
         diggable = {
             sandName, gravelName
@@ -117,7 +116,7 @@ do
         local inspect, info = direction == 1 and turtle.inspectUp or direction == 2 and turtle.inspectDown or turtle.inspect
 
         if inspect and info and table_contains(config.obstacles.diggable, info.name) then
-            os.sleep(0.5)
+            os.sleep(0.2)
             dig()
             turtle.recurseDigObstacle(direction)
         end
