@@ -138,14 +138,14 @@ local function mineBranchTunnel(data)
     turtle.doRefuel()
     mineTunnel(length + divider_length, height)
     turtle.recurseForward(divider_length)
-    turtle.rotate90(direction * -1)
+    turtle.rotate90(direction)
 
     for i = 1, count do
         turtle.doRefuel()
         mineTunnel(length, height)
-        turtle.rotate90(direction * -1)
-        turtle.recurseForward(divider_length)
         turtle.rotate90(direction)
+        turtle.recurseForward(divider_length)
+        turtle.rotate90(direction * -1)
     end
     
 end
