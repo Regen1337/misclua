@@ -23,12 +23,14 @@ local function handleObstacles()
         turtle.recurseDigObstacle(1)
     end
 
-    if down_inspect and table.contains(config.obstacles.diggable, down_inspect) then
-        turtle.recurseDigObstacle(2)
-    end
-
     if front_inspect and table.contains(config.obstacles.diggable, front_inspect) then
         turtle.recurseDigObstacle(3)
+    end
+
+    if down_inspect and table.contains(config.obstacles.diggable, down_inspect) then
+        turtle.recurseDigObstacle(2)
+    elseif not turtle.inspectDown() then
+        turtle.placeMineFloor()
     end
 
 end
@@ -49,7 +51,6 @@ local function mineTunnel(length, height, current_height)
         slots_count = turtle.getItemsCount() - slots_count
 
         if slots_count <= 1 and current_height <= 1 then
-            print("Unloading items...")
             turtle.unloadItems()
         end
 
@@ -95,7 +96,6 @@ local function mineTunnel(length, height, current_height)
                     turtle.recurseForward()
 
                     if i % torchInterval == 0 and i % current_height == 0 then
-                        print(string.format("Placing torch. Distance from start: %d", i))
                         placeTorches()
                     end
                 end
