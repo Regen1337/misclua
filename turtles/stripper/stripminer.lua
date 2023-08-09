@@ -65,11 +65,11 @@ local function mineTunnel(length, height, current_height)
     print(string.format("Height: %d, Current Height: %d", height, current_height))
     if height > 1 and current_height < height then
 
-        turtle.rotate180(DUR_ROTATION, function()
+        turtle.rotate180(POST_ROTATION, function()
             turtle.recurseUp()
         end)
 
-        mineTunnel(length, height, current_height)
+        return mineTunnel(length, height, current_height)
     elseif height >1 and current_height >= height then
         if isEven(height) then 
             turtle.rotate180(POST_ROTATION, function() 
@@ -158,15 +158,20 @@ if not tunnelHeight or tunnelHeight <= 0 then
     return
 end
 
+print("Please provide the length of the tunnel(s):")
+local tunnelLength = tonumber(read())
+
+--[[
 print("Please provide the direction of the tunnel(s) (left or right):")
 local tunnelDirection =  string.lower(tostring(read()))
-if not tunnelDirection or (tunnelDirection ~= "left" and tunnelDirection ~= "right") then
+if not tunnelDirection or (string.lower(tunnelDirection) ~= "left" and string.lower(tunnelDirection) ~= "right") then
     print("Invalid input. Exiting.")
     return
 end
+tunnelDirection = string.lower(tunnelDirection)
+]]
+tunnelDirection = "left"
 
-print("Please provide the length of the tunnel(s):")
-local tunnelLength = tonumber(read())
 if not tunnelLength or tunnelLength <= 0 then
     print("Invalid input. Exiting.")
 else
