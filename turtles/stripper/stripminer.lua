@@ -60,23 +60,22 @@ local function mineTunnel(length, height, current_height)
         if slots_count >= config.itemThreshold then
             turtle.unloadItems()
         end
-            
-        if turtle_step == length and height > 1 and height > current_height then
-            turtle.rotate180(PRE_ROTATION, function()
-                local cached_height = current_height + 1
-                while not turtle.up() and current_height < cached_height do
-                    turtle.digUp()
-                    if turtle.up() then
-                        current_height = current_height + 1
-                    end
-                end
-            end)
-        end
     end
 
     -- recursive call to mine the next tunnel of it's self
     if height > 1 and current_height < height then
-        current_height = current_height + 1
+        local cached_height = current_height + 1
+
+        turtle.rotate180(PRE_ROTATION, function()
+            while not turtle.up() and cached_height < current_height do
+                print(string.format("Current height: %d, Cached height: %d", current_height, cached_height))
+                turtle.digUp()
+                if turtle.up() then
+                    current_height = cached_height
+                end
+            end
+        end)
+
         mineTunnel(length, height, current_height)
     elseif height >1 and current_height == height then
         if isEven(height) then 
