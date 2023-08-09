@@ -52,7 +52,6 @@ end
 
 local function exec_callback(callback, ...)
     if callback and type(callback) == "function" then
-        print("exec_callback called")
         callback(...)
     end
 end
