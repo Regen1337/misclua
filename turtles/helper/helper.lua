@@ -4,6 +4,7 @@ local coalName, coalBlockName = "minecraft:coal", "minecraft:coal_block"
 local sandName, gravelName = "minecraft:sand", "minecraft:gravel"
 local lavaName, waterName = "minecraft:lava", "minecraft:water"
 local lavaFlowName, waterFlowName = "minecraft:flowing_lava", "minecraft:flowing_water"
+local cobblestoneName, andesiteName, dioriteName, graniteName = "minecraft:cobblestone", "minecraft:andesite", "minecraft:diorite", "minecraft:granite"
 
 local config = {
     torchPlacementInterval = 5,
@@ -14,6 +15,9 @@ local config = {
         },
         undiggable = {
             lavaName, waterName, lavaFlowName, waterFlowName
+        }
+        floorable = {
+            cobblestoneName, andesiteName, dioriteName, graniteName
         }
     }
 }
@@ -167,6 +171,14 @@ do
             return cache, table_indexed_count(cache)
         else
             return false, 0
+        end
+    end
+
+    function turtle.placeMineFloor()
+        local floorableSlot = turtle.findSlot(config.obstacles.floorable)
+        if floorableSlot then
+            turtle.select(floorableSlot)
+            turtle.placeDown()
         end
     end
 
