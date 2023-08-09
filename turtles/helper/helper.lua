@@ -15,7 +15,7 @@ local config = {
         },
         undiggable = {
             lavaName, waterName, lavaFlowName, waterFlowName
-        }
+        },
         floorable = {
             cobblestoneName, andesiteName, dioriteName, graniteName
         }
