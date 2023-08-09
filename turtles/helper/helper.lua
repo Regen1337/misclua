@@ -77,9 +77,13 @@ do
     -- turtle recurse up until it can go up, os.sleep(0.1)
     function turtle.recurseUp()
         if not turtle.up() then
-            turtle.digUp()
-            os.sleep(0.1)
-            turtle.recurseUp()
+            if turtle.digUp() then
+                turtle.up()
+                return true
+            else
+                os.sleep(0.1)
+                turtle.recurseUp()
+            end
         end
     end
 
