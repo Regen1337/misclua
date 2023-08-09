@@ -5,7 +5,7 @@ local function placeTorches()
         local torchCount = turtle.getItemCount(torchSlot)
         if torchCount > 0 then
             turtle.select(torchSlot)
-            turtle.rotate360(PRE_ROTATION, turtle.place)
+            turtle.rotate360(DUR_ROTATION, turtle.place)
         end
     end
 end
@@ -62,8 +62,9 @@ local function mineTunnel(length, height, current_height)
         end
             
         if turtle_step == length and height > 1 and height > current_height then
+            print("Going up1")
             turtle.rotate180(POST_ROTATION, function()
-                print("Going up!")
+                print("Going up2!")
                 while not turtle.up() do
                     turtle.digUp()
                     turtle.up()
@@ -101,7 +102,7 @@ local function mineTunnel(length, height, current_height)
     end
 
     if new_length > 0 then
-        mineTunnel(new_length, height)
+        mineTunnel(new_length, height, current_height)
     end
 end
 
