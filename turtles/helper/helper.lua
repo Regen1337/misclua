@@ -243,6 +243,25 @@ do
             exec_callback(callback, ...)
         end        
     end
+
+    -- rotate 90 based on -1 or 1 input and execute a callback
+    function turtle.rotate90(direction, method, callback, ...)
+        if method == PRE_ROTATION then
+            exec_callback(callback, ...)
+        end
+        if method == DUR_ROTATION then
+            exec_callback(callback, ...)
+        end
+        if direction == -1 then
+            turtle.turnLeft()
+        elseif direction == 1 then
+            turtle.turnRight()
+        end
+        if method == POST_ROTATION then
+            exec_callback(callback, ...)
+        end
+    end
+
 end
 
 local PRE_ROTATION = turtle.rotation_states.PRE_ROTATION

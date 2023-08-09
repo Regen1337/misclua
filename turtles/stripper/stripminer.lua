@@ -135,30 +135,16 @@ local function mineBranchTunnel(data)
     local count, divider_length, height, direction, length = unpack(data)
     local direction = (direction == "left") and -1 or 1
 
+    turtle.doRefuel()
+    mineTunnel(length + divider_length, height)
+
     for i = 1, count do
+        turtle.rotate90(direction)
         mineTunnel(length, height)
-
-        --[[
-        Return to the main tunnel and move forward by divider length
-        
-        turtle.turnLeft()
-        for _ = 1, divider_length do
-            if not turtle.forward() then
-                turtle.dig()
-                turtle.forward()
-            end
-        end
-        turtle.turnRight()
-
-        Move to the new branch tunnel position
-        
-        for _ = 1, (i == count and 0 or 1) do
-            turtle.forward()
-        end
-        turtle.turnRight(direction)
-        ]]
-        -- Refuel and continue to the next branch
-        turtle.doRefuel()
+        turtle.rotate90(direction * -1)
+        turtle.recurseForward(divider_length)
+    end
+    
     end
 end
 
@@ -167,22 +153,19 @@ print("Welcome to Strip Mining Turtle!")
 print("Please provide the number of tunnel(s):")
 local tunnelCount = tonumber(read())
 if not tunnelCount or tunnelCount <= 0 then
-    print("Invalid input. Exiting.")
-    return
+    tunnelCount = 0
 end
 
 print("Please provide the number of blocks between the tunnel(s):")
 local tunnelDivider = tonumber(read())
 if not tunnelDivider or tunnelDivider <= 0 then
-    print("Invalid input. Exiting.")
-    return
+    tunnelDivider = 0
 end
 
 print("Please provide the height of the tunnel(s):")
 local tunnelHeight = tonumber(read())
 if not tunnelHeight or tunnelHeight <= 0 then
-    print("Invalid input. Exiting.")
-    return
+    tunnelHeight = 1
 end
 
 print("Please provide the length of the tunnel(s):")
@@ -200,7 +183,7 @@ tunnelDirection = string.lower(tunnelDirection)
 tunnelDirection = "left"
 
 if not tunnelLength or tunnelLength <= 0 then
-    print("Invalid input. Exiting.")
+    tunnelLength = 1
 else
     turtle.doRefuel()
     mineBranchTunnel {tunnelCount, tunnelDivider, tunnelHeight, tunnelDirection, tunnelLength} 
