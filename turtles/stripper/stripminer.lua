@@ -67,6 +67,7 @@ local function mineTunnel(length, height, current_height)
 
         turtle.rotate180(DUR_ROTATION, function()
             turtle.recurseUp()
+            current_height = current_height + 1
         end)
 
         mineTunnel(length, height, current_height)
