@@ -18,7 +18,7 @@ local config = {
         },
         floorable = {
             cobblestoneName, andesiteName, dioriteName, graniteName
-        }
+        },
     }
 }
 
