@@ -64,16 +64,9 @@ local function mineTunnel(length, height, current_height)
 
     -- recursive call to mine the next tunnel of it's self
     if height > 1 and current_height < height then
-        local cached_height = current_height + 1
 
-        turtle.rotate180(PRE_ROTATION, function()
-            while not turtle.up() and cached_height < current_height do
-                print(string.format("Current height: %d, Cached height: %d", current_height, cached_height))
-                turtle.digUp()
-                if turtle.up() then
-                    current_height = cached_height
-                end
-            end
+        turtle.rotate180(DUR_ROTATION, function()
+            turtle.recurseUp()
         end)
 
         mineTunnel(length, height, current_height)

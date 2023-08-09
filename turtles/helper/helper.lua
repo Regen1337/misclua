@@ -74,6 +74,15 @@ do
         POST_ROTATION = 3
     }
 
+    -- turtle recurse up until it can go up, os.sleep(0.1)
+    function turtle.recurseUp()
+        if not turtle.up() then
+            turtle.digUp()
+            os.sleep(0.1)
+            turtle.recurseUp()
+        end
+    end
+
     -- Function to get the turtle's inventory
     function turtle.getItems()
         local items = {}
