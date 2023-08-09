@@ -185,12 +185,14 @@ do
                 os.pullEvent("turtle_inventory")
             end
 
-            for slot = 1, 16 do
-                if not table_indexed_contains(unload.blacklist, turtle.getItemDetail(slot).name) then
+            local slots, count = turtle.findUnloadBlacklistedSlots()
+            if slots then
+                for _, slot in ipairs(slots) do
                     turtle.select(slot)
                     turtle.dropDown()
                 end
             end
+
         end
     end
     
