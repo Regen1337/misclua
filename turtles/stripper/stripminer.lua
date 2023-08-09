@@ -32,6 +32,7 @@ local function handleObstacles(cur_height)
     end
 
     if not down_inspect and cur_height and cur_height <= 1 then
+        os.sleep(0.2)
         turtle.placeMineFloor()
     end
 
