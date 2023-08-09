@@ -83,9 +83,16 @@ do
             else
                 os.sleep(0.1)
             end
-        else
+        elseif turtle.detectUp() then
             os.sleep(0.2)
             turtle.recurseUp()
+        else
+            if not turtle.up() then
+                os.sleep(0.2)
+                turtle.recurseUp()
+            else
+                os.sleep(0.1)
+            end
         end
     end
 
