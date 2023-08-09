@@ -51,11 +51,6 @@ local function mineTunnel(length, height, current_height)
 
         new_length = math.max(0, new_length - 1)
 
-        if i % torchInterval == 0 then
-            print(string.format("Placing torch. Distance from start: %d", i))
-            placeTorches()
-        end
-
         local slots, slots_count = turtle.findUnloadBlacklistedSlots()
         if slots_count >= config.itemThreshold and current_height == 1 then
             turtle.unloadItems()
@@ -99,7 +94,7 @@ local function mineTunnel(length, height, current_height)
                 for i = 1, length do
                     turtle.recurseForward()
 
-                    if i % torchInterval == 0 then
+                    if i % torchInterval == 0 and i % current_height == 0 then
                         print(string.format("Placing torch. Distance from start: %d", i))
                         placeTorches()
                     end
@@ -122,19 +117,19 @@ local function mineBranchTunnel(data)
     local direction = (direction == "left") and -1 or 1
 
     turtle.doRefuel()
-    mineTunnel(length + divider_length, height)
+    mineTunnel(length + (divider_length * count), height)
 
-    for i = 1, divider_length do
+    for _ = 1, divider_length do
         turtle.recurseForward()
     end
 
     turtle.rotate90(direction)
 
-    for i = 1, count do
+    for _ = 1, count do
         turtle.doRefuel()
         turtle.rotate90(direction * -1)
 
-        for i2 = 1, divider_length do
+        for _ = 1, divider_length do
             turtle.recurseForward()
         end
         turtle.rotate90(direction)
