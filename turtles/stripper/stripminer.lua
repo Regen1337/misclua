@@ -63,7 +63,8 @@ local function mineTunnel(length, height, current_height)
             
         if turtle_step == length and height > 1 and height > current_height then
             turtle.rotate180(PRE_ROTATION, function()
-                while not turtle.up() and current_height < current_height + 1 do
+                local cached_height = current_height + 1
+                while not turtle.up() and current_height < cached_height do
                     turtle.digUp()
                     if turtle.up() then
                         current_height = current_height + 1
