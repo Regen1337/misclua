@@ -67,9 +67,9 @@ local function mineTunnel(length, height, current_height)
 
         turtle.rotate180(DUR_ROTATION, function()
             turtle.recurseUp()
-            current_height = current_height + 1
         end)
 
+        current_height = current_height + 1
         mineTunnel(length, height, current_height)
     elseif height >1 and current_height == height then
         if isEven(height) then 
