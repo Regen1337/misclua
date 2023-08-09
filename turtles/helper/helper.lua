@@ -1,6 +1,10 @@
 local torchName = "minecraft:torch"
 local chestName = "minecraft:chest"
 local coalName, coalBlockName = "minecraft:coal", "minecraft:coal_block"
+local sandName, gravelName = "minecraft:sand", "minecraft:gravel"
+local lavaName, waterName = "minecraft:lava", "minecraft:water"
+local lavaFlowName, waterFlowName = "minecraft:flowing_lava", "minecraft:flowing_water"
+
 
 local config = {
     torchPlacementInterval = 5,
@@ -102,6 +106,20 @@ do
             turtle.dig()
             turtle.recurseForward()
         end
+    end
+
+    -- recursive dig function with a delay to check for gravel, and input direction to dig and check
+    function turtle.recurseDig(direction)
+        local dig = direction == 1 and turtle.digUp or direction == 2 and turtle.digDown or turtle.dig
+        local detect = direction == 1 and turtle.detectUp or direction == 2 and turtle.detectDown or turtle.detect
+
+        if detect() then
+            if dig() then
+                os.sleep(1)
+                turtle.recurseDig(direction)
+            end
+        end
+
     end
 
     -- Function to get the turtle's inventory
