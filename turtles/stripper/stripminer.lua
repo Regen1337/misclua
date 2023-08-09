@@ -63,7 +63,7 @@ local function mineTunnel(length, height, current_height)
     end
 
     print(string.format("Height: %d, Current Height: %d", height, current_height))
-    if height > 1 and current_height < height + 1 then
+    if height > 1 and current_height < height then
 
         turtle.rotate180(POST_ROTATION, function()
         end)
