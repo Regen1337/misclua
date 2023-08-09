@@ -84,20 +84,6 @@ local function mineTunnel(length, height, current_height)
                 end
             end)
         else
-            --[[
-            turtle.rotate360(DUR_ROTATION, function() 
-                while current_height > 1 do
-                    if not turtle.down() then
-                        turtle.digDown()
-                        turtle.down()
-                    end
-                    current_height = current_height - 1
-                    os.sleep(0.1)
-                    print(string.format("Height: %d, Current Height: %d", height, current_height))
-                end
-            end)
-            ]]
-
             turtle.rotate180(POST_ROTATION, function() 
                 while current_height > 1 do
                     if not turtle.down() then
@@ -142,6 +128,10 @@ local function mineBranchTunnel(data)
 
     for i = 1, count do
         turtle.doRefuel()
+        turtle.rotate90(direction * -1)
+        turtle.recurseForward(divider_length)
+        turtle.rotate90(direction)
+        
         mineTunnel(length, height)
     end
     
