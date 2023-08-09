@@ -108,7 +108,7 @@ end
 
 -- Function to mine a branch tunnel
 local function mineBranchTunnel(data)
-    local count, length, height, divider_length, direction = unpack(data)
+    local count, divider_length, height, direction, length = unpack(data)
     local direction = (direction == "left") and -1 or 1
 
     for i = 1, count do
@@ -174,7 +174,7 @@ if not tunnelLength or tunnelLength <= 0 then
     print("Invalid input. Exiting.")
 else
     turtle.doRefuel()
-    mineBranchTunnel {tunnelCount, tunnelLength, tunnelHeight, tunnelDivider} 
+    mineBranchTunnel {tunnelCount, tunnelDivider, tunnelHeight, tunnelDirection, tunnelLength} 
 end
 
 
