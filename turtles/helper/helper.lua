@@ -5,7 +5,7 @@ local coalName, coalBlockName = "minecraft:coal", "minecraft:coal_block"
 local config = {
     torchPlacementInterval = 5,
     fuelThreshold = 500,
-    itemThreshold = 10
+    itemThreshold = 12
 }
 
 local unload = {
