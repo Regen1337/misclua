@@ -53,10 +53,7 @@ local function mineTunnel(length, height, current_height)
             turtle.unloadItems()
         end
 
-        if not turtle.forward() then
-            turtle.dig()
-            turtle.forward()
-        end
+        turtle.recurseForward()
 
         new_length = math.max(0, new_length - 1)
     end

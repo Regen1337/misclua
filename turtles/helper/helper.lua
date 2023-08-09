@@ -98,11 +98,8 @@ do
 
     -- recursive forward function
     function turtle.recurseForward()
-        if turtle.forward() then
-            os.sleep(0.1)
-        else
+        if not turtle.forward() then
             turtle.dig()
-            os.sleep(0.1)
             turtle.recurseForward()
         end
     end
