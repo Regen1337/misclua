@@ -202,7 +202,8 @@ do
 
     -- Function to rotate the turtle 180 degrees and execute a callback
     function turtle.rotate180(method, callback, ...)
-        print("rotate180 called")
+        print(string.format("callback: %s, type: %s", callback, type(callback)))
+        print(string.format("method: %d", method))
         if callback and type(callback) ~= "function" then return end
         if method <= 0 or method > table_indexed_count(turtle.rotation_states) then return end
 
