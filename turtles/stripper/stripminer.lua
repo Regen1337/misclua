@@ -117,7 +117,7 @@ end
 -- Function to mine a branch tunnel
 local function mineBranchTunnel(data)
     local count, divider_length, height, direction, length = unpack(data)
-    local direction = (direction == "left") and -1 or 1
+    direction = (direction == "left") and -1 or 1
 
     turtle.doRefuel()
     mineTunnel(length + (divider_length * count), height)
@@ -168,7 +168,7 @@ local tunnelLength = tonumber(read())
 
 print("Please provide the direction of the tunnel(s) (left or right):")
 local tunnelDirection =  string.lower(tostring(read()))
-if not tunnelDirection or (string.lower(tunnelDirection) ~= "left" and string.lower(tunnelDirection) ~= "right") then
+if not tunnelDirection or (tunnelDirection ~= "left" and tunnelDirection ~= "right") then
     print(string.format("Invalid direction provided: %s", tunnelDirection))
     return
 end
@@ -181,6 +181,5 @@ else
     turtle.doRefuel()
     mineBranchTunnel {tunnelCount, tunnelDivider, tunnelHeight, tunnelDirection, tunnelLength} 
 end
-
 
 print("Strip Mining Turtle has completed its task!")

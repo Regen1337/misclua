@@ -267,4 +267,3 @@ end
 local PRE_ROTATION = turtle.rotation_states.PRE_ROTATION
 local DUR_ROTATION = turtle.rotation_states.DUR_ROTATION
 local POST_ROTATION = turtle.rotation_states.POST_ROTATION
-
