@@ -77,6 +77,8 @@ local function mineTunnel(length, height, current_height)
                         if turtle.down() then
                             current_height = current_height - 1
                         end
+                    else
+                        current_height = current_height - 1
                     end
                     os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
@@ -90,6 +92,8 @@ local function mineTunnel(length, height, current_height)
                         if turtle.down() then
                             current_height = current_height - 1
                         end
+                    else
+                        current_height = current_height - 1
                     end
                     os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
