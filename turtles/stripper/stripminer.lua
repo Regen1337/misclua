@@ -11,7 +11,7 @@ local function placeTorches()
 end
 
 -- Function to handle obstacles
-local function handleObstacles()
+local function handleObstacles(cur_height)
     local up_inspect, up_info = turtle.inspectUp()
     local down_inspect, down_info = turtle.inspectDown()
     local front_inspect, front_info = turtle.inspect()
@@ -29,7 +29,9 @@ local function handleObstacles()
 
     if down_inspect and table.contains(config.obstacles.diggable, down_inspect) then
         turtle.recurseDigObstacle(2)
-    elseif not turtle.inspectDown() then
+    end
+
+    if not down_inspect and cur_height and cur_height <= 1 then
         turtle.placeMineFloor()
     end
 
@@ -44,7 +46,7 @@ local function mineTunnel(length, height, current_height)
     local tunnel_done = false
 
     for i = 1, new_length do
-        handleObstacles()
+        handleObstacles(current_height)
         turtle_step = turtle_step + 1
 
         local slots, slots_count = turtle.findStripMinerUnloadSlots()
