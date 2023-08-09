@@ -145,7 +145,6 @@ local function mineBranchTunnel(data)
         mineTunnel(length, height)
         turtle.rotate90(direction)
         turtle.recurseForward(divider_length)
-        turtle.rotate90(direction * -1)
     end
     
 end
