@@ -161,7 +161,13 @@ end
 
 print("Please provide the length of the tunnel(s):")
 local tunnelLength = tonumber(read())
+if not tunnelLength or tunnelLength <= 0 then
+    tunnelLength = 1
+end
 
+if isEven(tunnelLength) then
+    tunnelLength = tunnelLength + 1
+end
 
 print("Please provide the direction of the tunnel(s) (left or right):")
 local tunnelDirection =  string.lower(tostring(read()))
@@ -171,12 +177,8 @@ if not tunnelDirection or (tunnelDirection ~= "left" and tunnelDirection ~= "rig
 end
 tunnelDirection = string.lower(tunnelDirection)
 
+turtle.doRefuel()
+mineBranchTunnel {tunnelCount, tunnelDivider, tunnelHeight, tunnelDirection, tunnelLength} 
 
-if not tunnelLength or tunnelLength <= 0 then
-    tunnelLength = 1
-else
-    turtle.doRefuel()
-    mineBranchTunnel {tunnelCount, tunnelDivider, tunnelHeight, tunnelDirection, tunnelLength} 
-end
 
 print("Strip Mining Turtle has completed its task!")
