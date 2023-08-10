@@ -78,7 +78,6 @@ local function mineTunnel(length, height, current_height)
                     end)
                     
                     os.sleep(0.1)
-                    print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
             end)
         else
@@ -89,7 +88,6 @@ local function mineTunnel(length, height, current_height)
                     end)
                 
                     os.sleep(0.1)
-                    print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
 
                 for i = 1, length do
