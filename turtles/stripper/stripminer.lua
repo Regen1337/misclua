@@ -72,29 +72,26 @@ local function mineTunnel(length, height, current_height)
     elseif height >1 and current_height >= height then
         if isEven(height) then 
             turtle.rotate180(POST_ROTATION, function() 
-                while current_height > 1 do
-                    if not turtle.down() then
-                        turtle.digDown()
-                        turtle.down()
-                    end
-                    current_height = current_height - 1
+                for _ = 1, current_height do
+                    turtle.recurseDown(function()
+                        current_height = current_height - 1
+                    end)
+                    
                     os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
             end)
         else
             turtle.rotate180(POST_ROTATION, function() 
-                while current_height > 1 do
-                    if not turtle.down() then
-                        turtle.digDown()
-                        turtle.down()
-                    end
-                    current_height = current_height - 1
+                for _ = 1, current_height do
+                    turtle.recurseDown(function()
+                        current_height = current_height - 1
+                    end)
+                
                     os.sleep(0.1)
                     print(string.format("Height: %d, Current Height: %d", height, current_height))
                 end
 
-                -- move to end of tunnel
                 for i = 1, length do
                     turtle.recurseForward()
 

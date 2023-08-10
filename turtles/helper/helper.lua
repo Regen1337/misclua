@@ -115,12 +115,13 @@ do
         end
     end
 
-    function turtle.recurseDown()
+    function turtle.recurseDown(callback, ...)
         if turtle.digDown() then
             if not turtle.down() then
                 os.sleep(0.2)
                 turtle.recurseDown()
             else
+                exec_callback(callback, ...)
                 os.sleep(0.1)
             end
         elseif turtle.detectDown() then
@@ -131,6 +132,7 @@ do
                 os.sleep(0.2)
                 turtle.recurseDown()
             else
+                exec_callback(callback, ...)
                 os.sleep(0.1)
             end
         end
