@@ -187,7 +187,7 @@ do
         for slot = 1, 16 do
             local item = turtle.getItemDetail(slot)
             if item and table_indexed_contains(itemNames, item.name) then
-                return slot
+                return slot, item.count
             end
         end
         return nil
@@ -236,11 +236,13 @@ do
     function turtle.doRefuel()
         while turtle.getFuelLevel() < config.fuelThreshold do
             local refueled = false
-            local fuelSlot = turtle.findSlot {coalName, coalBlockName}
+            local fuelSlot, count = turtle.findSlot {coalName, coalBlockName}
             if fuelSlot then
                 turtle.select(fuelSlot)
-                if turtle.refuel(1) then
-                    refueled = true
+                for i = count, 1, -1 do
+                    if turtle.refuel(i) then
+                        refueled = true
+                    end
                 end
             end
             if not refueled then
