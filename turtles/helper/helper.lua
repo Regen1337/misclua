@@ -24,7 +24,7 @@ local config = {
 
 local unload = {
     blacklist = {
-        torchName, chestName, coalName, coalBlockName
+        torchName, chestName, coalBlockName
     }
 }
 
@@ -115,6 +115,39 @@ do
         end
     end
 
+    function turtle.recurseDown()
+        if turtle.digDown() then
+            if not turtle.down() then
+                os.sleep(0.2)
+                turtle.recurseDown()
+            else
+                os.sleep(0.1)
+            end
+        elseif turtle.detectDown() then
+            os.sleep(0.2)
+            turtle.recurseDown()
+        else
+            if not turtle.down() then
+                os.sleep(0.2)
+                turtle.recurseDown()
+            else
+                os.sleep(0.1)
+            end
+        end
+    end
+
+    function turtle.recurseDigNonObstacle(direction)
+        local dig = direction == 1 and turtle.digUp or direction == 2 and turtle.digDown or turtle.dig
+        local inspect, info = direction == 1 and turtle.inspectUp or direction == 2 and turtle.inspectDown or turtle.inspect
+
+        if inspect and info and not table_contains(config.obstacles.undiggable, info.name) then
+            os.sleep(0.2)
+            dig()
+            turtle.recurseDigNonObstacle(direction)
+        end
+
+    end
+
     function turtle.recurseDigObstacle(direction)
         local dig = direction == 1 and turtle.digUp or direction == 2 and turtle.digDown or turtle.dig
         local inspect, info = direction == 1 and turtle.inspectUp or direction == 2 and turtle.inspectDown or turtle.inspect
@@ -156,6 +189,22 @@ do
             end
         end
         return nil
+    end
+
+    function turtle.findFloorableSlots()
+        local cache = {}
+        for slot = 1, 16 do
+            local item = turtle.getItemDetail(slot)
+            if item and table_indexed_contains(config.obstacles.floorable, item.name) then
+                table_insert(cache, slot)
+            end
+        end
+
+        if table_indexed_count(cache) > 0 then
+            return cache, table_indexed_count(cache)
+        else
+            return false, 0
+        end
     end
 
     function turtle.findStripMinerUnloadSlots(bWhitelist)
@@ -200,17 +249,38 @@ do
     end
 
     function turtle.unloadItems()
+        local slots, count = turtle.findFloorableSlots()
+        if slots and count >= 2 then
+            for i = 1, count - 1 do
+                turtle.select(slots[i])
+                turtle.drop()
+            end
+        end
+
+        slots, count = turtle.findStripMinerUnloadSlots()
+        count = turtle.getItemsCount() - turtle.findStripMinerUnloadSlots()
+
+        if slots and count > 1 then
+            print(string.format("Aborted unloading. %d slots are occupied by items that are not in the unload blacklist.", count))
+            return
+        end
+
+        slots, count = turtle.findStripMinerUnloadSlots(true)
+
         local chestSlot = turtle.findSlot {chestName}
         if chestSlot then
             turtle.select(chestSlot)
             turtle.digDown()
 
             if not turtle.placeDown() then
-                print("Unable to place chest. Please make sure there's a chest in the turtle's inventory.")
-                os.pullEvent("turtle_inventory")
+                turtle.recurseDigNonObstacle(2)
+
+                if not turtle.placeDown() then
+                    print("Unable to place chest. Please make sure there's a chest in the turtle's inventory.")
+                    os.pullEvent("turtle_inventory")
+                end
             end
 
-            local slots, count = turtle.findStripMinerUnloadSlots(true)
             if slots then
                 for i = 1, count do
                     turtle.select(slots[i])
