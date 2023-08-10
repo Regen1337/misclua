@@ -242,9 +242,13 @@ do
                 for i = count, 1, -1 do
                     if turtle.refuel(i) then
                         refueled = true
+                        break
                     end
                 end
+                
+
             end
+
             if not refueled then
                 print("Out of fuel. Please provide more fuel in the turtle's inventory.")
                 os.pullEvent("turtle_inventory")
