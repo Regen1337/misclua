@@ -260,7 +260,7 @@ do
         end
 
         slots, count = turtle.findStripMinerUnloadSlots()
-        count = turtle.getItemsCount() - turtle.findStripMinerUnloadSlots()
+        count = turtle.getItemsCount() - count
 
         if slots and count > 1 then
             print(string.format("Aborted unloading. %d slots are occupied by items that are not in the unload blacklist.", count))
